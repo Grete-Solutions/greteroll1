@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
+import { ThemeProvider } from '@/hooks/use-theme';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -12,7 +13,7 @@ interface MainLayoutProps {
 const MainLayout: React.FC<MainLayoutProps> = ({ children, variant = 'admin' }) => {
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-gray-50">
+      <div className="min-h-screen flex w-full bg-background">
         <Sidebar variant={variant} />
         <div className="flex-1 flex flex-col overflow-hidden">
           <Navbar variant={variant} />

@@ -1,12 +1,22 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, Tooltip, ResponsiveContainer, XAxis, YAxis, Legend } from 'recharts';
 import { Users, DollarSign, Calendar, Clock, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { ActivityLogs } from '@/components/logs/ActivityLogs';
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle,
+  DialogTrigger 
+} from '@/components/ui/dialog';
 
 const CompanyDashboard = () => {
   const navigate = useNavigate();
+  const [showLogs, setShowLogs] = React.useState(false);
   
   // Mock data for charts
   const payrollHistoryData = [
@@ -55,8 +65,8 @@ const CompanyDashboard = () => {
         </div>
       </div>
 
-      {/* Stats Cards - Updated for better responsiveness */}
-      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      {/* Top Stats Cards - First Row - Responsive to 1 row on medium+ screens */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <StatCard
           title="Total Employees"
           value={stats.totalEmployees.toString()}
@@ -77,15 +87,19 @@ const CompanyDashboard = () => {
           icon={<Calendar className="h-8 w-8 text-purple-500" />}
           linkText={stats.upcomingPayroll.status}
           linkUrl="/company/payroll"
-          badgeColor="bg-yellow-100 text-yellow-800"
+          badgeColor="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
         />
+      </div>
+
+      {/* Second Row of Stats - Two cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <StatCard
           title="Pending Approvals"
           value={stats.pendingApprovals.toString()}
           icon={<AlertCircle className="h-8 w-8 text-orange-500" />}
           linkText="View approvals"
           linkUrl="/company/approvals"
-          badgeColor="bg-orange-100 text-orange-800"
+          badgeColor="bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300"
         />
         <StatCard
           title="Leave Requests"
@@ -171,7 +185,7 @@ const CompanyDashboard = () => {
                   department="Marketing"
                   date="2025-04-06"
                   status="Pending approval"
-                  statusColor="text-yellow-600 bg-yellow-100"
+                  statusColor="text-yellow-600 bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-300"
                 />
                 <ActivityRow
                   activity="Leave request"
@@ -179,7 +193,7 @@ const CompanyDashboard = () => {
                   department="Engineering"
                   date="2025-04-05"
                   status="Approved"
-                  statusColor="text-green-600 bg-green-100"
+                  statusColor="text-green-600 bg-green-100 dark:bg-green-900 dark:text-green-300"
                 />
                 <ActivityRow
                   activity="New hire onboarding"
@@ -187,7 +201,7 @@ const CompanyDashboard = () => {
                   department="Sales"
                   date="2025-04-04"
                   status="In progress"
-                  statusColor="text-blue-600 bg-blue-100"
+                  statusColor="text-blue-600 bg-blue-100 dark:bg-blue-900 dark:text-blue-300"
                 />
                 <ActivityRow
                   activity="Bonus payment processed"
@@ -195,7 +209,7 @@ const CompanyDashboard = () => {
                   department="Finance"
                   date="2025-04-03"
                   status="Completed"
-                  statusColor="text-green-600 bg-green-100"
+                  statusColor="text-green-600 bg-green-100 dark:bg-green-900 dark:text-green-300"
                 />
                 <ActivityRow
                   activity="Overtime request"
@@ -203,7 +217,7 @@ const CompanyDashboard = () => {
                   department="Operations"
                   date="2025-04-02"
                   status="Rejected"
-                  statusColor="text-red-600 bg-red-100"
+                  statusColor="text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300"
                 />
               </tbody>
             </table>
@@ -214,12 +228,22 @@ const CompanyDashboard = () => {
             variant="outline" 
             size="sm" 
             className="ml-auto"
-            onClick={() => navigate('/company/reports')}
+            onClick={() => setShowLogs(true)}
           >
-            View All Activities
+            View All Logs
           </Button>
         </CardFooter>
       </Card>
+
+      {/* Activity Logs Dialog */}
+      <Dialog open={showLogs} onOpenChange={setShowLogs}>
+        <DialogContent className="max-w-5xl w-[90vw]">
+          <DialogHeader>
+            <DialogTitle>Activity Logs</DialogTitle>
+          </DialogHeader>
+          <ActivityLogs />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
@@ -239,14 +263,14 @@ const StatCard: React.FC<StatCardProps> = ({
   icon,
   linkText,
   linkUrl,
-  badgeColor = "bg-blue-100 text-blue-800"
+  badgeColor = "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300"
 }) => {
   return (
     <Card className="card-hover">
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-gray-500">{title}</p>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</p>
             <p className="text-3xl font-bold">{value}</p>
             <a
               href={linkUrl}
@@ -255,7 +279,7 @@ const StatCard: React.FC<StatCardProps> = ({
               {linkText}
             </a>
           </div>
-          <div className="rounded-full p-3 bg-gray-50">{icon}</div>
+          <div className="rounded-full p-3 bg-gray-50 dark:bg-gray-800">{icon}</div>
         </div>
       </CardContent>
     </Card>

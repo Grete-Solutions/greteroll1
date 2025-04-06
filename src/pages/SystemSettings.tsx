@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   Card, 
@@ -29,12 +30,15 @@ import {
   SelectTrigger, 
   SelectValue 
 } from '@/components/ui/select';
-import { FileDown, Database, Shield, Cog, Languages } from 'lucide-react';
+import { FileDown, Database, Shield, Cog, Languages, Users } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
+import { SystemSettings as SystemSettingsComponent } from '@/components/settings/SystemSettings';
 
 const SystemSettings = () => {
   const isMobile = useIsMobile();
+  const [isSystemSettingsOpen, setIsSystemSettingsOpen] = useState(false);
+  
   const [roles, setRoles] = useState([
     { id: 1, name: 'Super Admin', users: 2 },
     { id: 2, name: 'Company Admin', users: 15 },
@@ -80,7 +84,14 @@ const SystemSettings = () => {
 
   return (
     <div className="container mx-auto py-6">
-      <h1 className="text-2xl font-bold tracking-tight mb-6">System Settings</h1>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <h1 className="text-2xl font-bold tracking-tight">System Settings</h1>
+        
+        <Button onClick={() => setIsSystemSettingsOpen(true)}>
+          Configure Branding
+        </Button>
+      </div>
+    
       <Tabs defaultValue="security" className="space-y-4">
         <TabsList className={cn("w-full md:w-auto", isMobile && "flex flex-wrap")}>
           <TabsTrigger value="security" className="flex items-center gap-2">
@@ -182,7 +193,7 @@ const SystemSettings = () => {
                 </div>
                 <div className="mt-4">
                   <p className="text-sm text-muted-foreground mb-2">Current allowed IPs:</p>
-                  <div className="bg-gray-50 p-2 rounded text-sm">
+                  <div className="bg-gray-50 dark:bg-gray-800 p-2 rounded text-sm">
                     <p>192.168.1.0/24 (Office Network)</p>
                   </div>
                 </div>
@@ -412,30 +423,15 @@ const SystemSettings = () => {
           </Card>
         </TabsContent>
       </Tabs>
+      
+      {/* System Settings Dialog */}
+      <SystemSettingsComponent 
+        isAdmin={true} 
+        isOpen={isSystemSettingsOpen} 
+        onClose={() => setIsSystemSettingsOpen(false)} 
+      />
     </div>
   );
 };
 
 export default SystemSettings;
-
-function Users(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-    </svg>
-  )
-}

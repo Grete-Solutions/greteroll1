@@ -30,6 +30,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import { Button } from '@/components/ui/button';
+import { ThemeToggler } from '@/components/theme/ThemeToggler';
 
 interface SidebarProps {
   variant?: 'admin' | 'company' | 'employee';
@@ -108,15 +109,18 @@ const Sidebar: React.FC<SidebarProps> = ({ variant = 'admin' }) => {
             <div className="bg-primary rounded-full p-2">
               <BarChart3 className="h-5 w-5 text-white" />
             </div>
-            <span className="font-bold text-xl">PayrollNexus</span>
+            <span className="font-bold text-xl">GreteRoll</span>
           </div>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => setIsDrawerOpen(false)}
-          >
-            <X className="h-5 w-5" />
-          </Button>
+          <div className="flex items-center space-x-2">
+            <ThemeToggler />
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => setIsDrawerOpen(false)}
+            >
+              <X className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
         <nav className="space-y-1 px-2">
           {sidebarItems.map((item) => (
@@ -156,14 +160,17 @@ const Sidebar: React.FC<SidebarProps> = ({ variant = 'admin' }) => {
 
   return (
     <ShadcnSidebar className="z-50 hidden md:block">
-      <SidebarHeader className="flex justify-center items-center p-4">
+      <SidebarHeader className="flex flex-col justify-center items-center p-4">
         <div className="flex items-center space-x-2">
           <div className="bg-primary rounded-full p-2">
             <BarChart3 className="h-6 w-6 text-white" />
           </div>
-          <span className="text-white font-bold text-xl">PayrollNexus</span>
+          <span className="text-white font-bold text-xl">GreteRoll</span>
         </div>
         <div className="text-white text-sm mt-2">{sidebarTitle}</div>
+        <div className="mt-2">
+          <ThemeToggler />
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <nav className="space-y-1 px-2 py-5">
