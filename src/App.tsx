@@ -24,6 +24,12 @@ import CompanyLeave from "./pages/company/CompanyLeave";
 import CompanyApprovals from "./pages/company/CompanyApprovals";
 import CompanyReports from "./pages/company/CompanyReports";
 import CompanySettings from "./pages/company/CompanySettings";
+import CompanyProfile from "./pages/company/CompanyProfile";
+import AdminProfile from "./pages/admin/AdminProfile";
+// Import Employee pages
+import EmpLogin from "./pages/emp/EmpLogin";
+import EmpDashboard from "./pages/emp/EmpDashboard";
+import EmpProfile from "./pages/emp/EmpProfile";
 
 const queryClient = new QueryClient();
 
@@ -74,6 +80,14 @@ const App = () => (
             element={
               <MainLayout variant="admin">
                 <Reports />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/admin/profile"
+            element={
+              <MainLayout variant="admin">
+                <AdminProfile />
               </MainLayout>
             }
           />
@@ -168,10 +182,37 @@ const App = () => (
             }
           />
           <Route
+            path="/company/profile"
+            element={
+              <MainLayout variant="company">
+                <CompanyProfile />
+              </MainLayout>
+            }
+          />
+          <Route
             path="/company/settings"
             element={
               <MainLayout variant="company">
                 <CompanySettings />
+              </MainLayout>
+            }
+          />
+          
+          {/* Employee Self-Service Routes */}
+          <Route path="/emp" element={<EmpLogin />} />
+          <Route
+            path="/emp/dashboard"
+            element={
+              <MainLayout variant="employee">
+                <EmpDashboard />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/emp/profile"
+            element={
+              <MainLayout variant="employee">
+                <EmpProfile />
               </MainLayout>
             }
           />

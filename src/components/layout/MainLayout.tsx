@@ -6,7 +6,7 @@ import Navbar from './Navbar';
 
 interface MainLayoutProps {
   children: ReactNode;
-  variant?: 'admin' | 'company';
+  variant?: 'admin' | 'company' | 'employee';
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children, variant = 'admin' }) => {
@@ -16,7 +16,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, variant = 'admin' }) 
         <Sidebar variant={variant} />
         <div className="flex-1 flex flex-col overflow-hidden">
           <Navbar variant={variant} />
-          <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6">
+          <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6 pt-16 md:pt-6">
             {children}
           </main>
         </div>
