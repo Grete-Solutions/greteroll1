@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Card, 
@@ -57,7 +56,6 @@ const CompanyDepartments = () => {
   const [editingDepartment, setEditingDepartment] = useState<any>(null);
   const [currentError, setCurrentError] = useState<string | null>(null);
   
-  // Mock data for departments
   const [departments, setDepartments] = useState([
     { id: 1, name: 'Engineering', head: 'Robert Taylor', headId: 7, employees: 12, status: 'Active', description: 'Software development and technical operations' },
     { id: 2, name: 'Marketing', head: 'Sarah Johnson', headId: 2, employees: 8, status: 'Active', description: 'Brand management and marketing campaigns' },
@@ -68,7 +66,6 @@ const CompanyDepartments = () => {
     { id: 7, name: 'Research', head: 'Unassigned', headId: null, employees: 0, status: 'Inactive', description: 'Product research and development' }
   ]);
 
-  // Mock data for employees (for department head selection)
   const employees = [
     { id: 2, name: 'Sarah Johnson', department: 'Marketing', position: 'Marketing Manager' },
     { id: 5, name: 'David Kim', department: 'Finance', position: 'Financial Analyst' },
@@ -78,7 +75,6 @@ const CompanyDepartments = () => {
     { id: 10, name: 'Nicole Garcia', department: 'Sales', position: 'Sales Lead' },
   ];
 
-  // Filter departments based on search term
   const filteredDepartments = departments.filter(department => 
     department.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     department.head.toLowerCase().includes(searchTerm.toLowerCase())
@@ -105,7 +101,6 @@ const CompanyDepartments = () => {
   };
 
   const validateDepartment = () => {
-    // Check for duplicate department names
     if (!editingDepartment.name.trim()) {
       setCurrentError("Department name is required");
       return false;
@@ -127,7 +122,6 @@ const CompanyDepartments = () => {
   const handleSaveDepartment = () => {
     if (validateDepartment()) {
       if (editingDepartment.id) {
-        // Update existing department
         setDepartments(
           departments.map((dept) =>
             dept.id === editingDepartment.id ? editingDepartment : dept
@@ -138,7 +132,6 @@ const CompanyDepartments = () => {
           description: `${editingDepartment.name} has been updated successfully.`,
         });
       } else {
-        // Add new department
         const newDepartment = {
           ...editingDepartment,
           id: departments.length + 1,
@@ -154,7 +147,6 @@ const CompanyDepartments = () => {
   };
 
   const handleDeleteDepartment = () => {
-    // Check if department has employees
     if (editingDepartment.employees > 0) {
       setIsDeleteDialogOpen(true);
     } else {
@@ -269,7 +261,6 @@ const CompanyDepartments = () => {
         </CardContent>
       </Card>
 
-      {/* Add/Edit Department Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
@@ -314,7 +305,7 @@ const CompanyDepartments = () => {
                   <SelectValue placeholder="Select department head" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Unassigned</SelectItem>
+                  <SelectItem value="unassigned">Unassigned</SelectItem>
                   {employees.map((employee) => (
                     <SelectItem key={employee.id} value={employee.id.toString()}>
                       {employee.name} - {employee.position}
@@ -381,7 +372,6 @@ const CompanyDepartments = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Confirmation Dialog for Department Deletion */}
       <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
