@@ -35,14 +35,14 @@ import {
   Image, 
   Building, 
   Clock,
-  Language,
+  Languages,
   Calendar,
   Settings,
   Shield,
   Upload,
   BellRing,
   ExternalLink,
-  Flask
+  Beaker
 } from "lucide-react";
 
 interface SystemSettingsProps {
@@ -357,7 +357,7 @@ export function SystemSettings({ isAdmin = false, isOpen, onClose }: SystemSetti
               
               <div className="space-y-2">
                 <Label htmlFor="language" className="flex items-center gap-2">
-                  <Language className="h-4 w-4" />
+                  <Languages className="h-4 w-4" />
                   System Language
                 </Label>
                 <Select 
@@ -745,7 +745,7 @@ export function SystemSettings({ isAdmin = false, isOpen, onClose }: SystemSetti
               <div className="flex items-center justify-between pt-4">
                 <div className="space-y-0.5">
                   <Label className="flex items-center gap-2">
-                    <Flask className="h-4 w-4" />
+                    <Beaker className="h-4 w-4" />
                     Beta Feature Toggle
                   </Label>
                   <p className="text-sm text-muted-foreground">
