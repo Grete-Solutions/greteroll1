@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import {
   BarChart3,
   Building,
@@ -21,6 +21,8 @@ import {
 } from '@/components/ui/sidebar';
 
 const Sidebar = () => {
+  const location = useLocation();
+  
   const sidebarItems = [
     { to: "/dashboard", icon: <LayoutDashboard size={20} />, label: "Dashboard" },
     { to: "/companies", icon: <Building size={20} />, label: "Companies Management" },
@@ -50,6 +52,7 @@ const Sidebar = () => {
               to={item.to} 
               icon={item.icon} 
               label={item.label} 
+              isActive={location.pathname === item.to}
             />
           ))}
         </nav>
@@ -72,15 +75,16 @@ interface NavItemProps {
   to: string;
   icon: React.ReactNode;
   label: string;
+  isActive?: boolean;
 }
 
-const NavItem: React.FC<NavItemProps> = ({ to, icon, label }) => {
+const NavItem: React.FC<NavItemProps> = ({ to, icon, label, isActive }) => {
   return (
     <NavLink
       to={to}
-      className={({ isActive }) =>
+      className={({ isActive: navActive }) =>
         `flex items-center px-4 py-2.5 ${
-          isActive
+          isActive || navActive
             ? 'bg-sidebar-accent text-sidebar-foreground'
             : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50'
         } rounded-md transition-colors`

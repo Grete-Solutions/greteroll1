@@ -7,6 +7,11 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import CompanySetup from "./pages/CompanySetup";
+import EmployeeManagement from "./pages/EmployeeManagement";
+import PayrollConfig from "./pages/PayrollConfig";
+import Reports from "./pages/Reports";
+import SystemSettings from "./pages/SystemSettings";
+import AuditLogs from "./pages/AuditLogs";
 import NotFound from "./pages/NotFound";
 import MainLayout from "./components/layout/MainLayout";
 
@@ -38,8 +43,6 @@ const App = () => (
               </MainLayout>
             }
           />
-
-          {/* Placeholder routes for future implementation */}
           <Route
             path="/companies"
             element={
@@ -55,10 +58,7 @@ const App = () => (
             path="/employees"
             element={
               <MainLayout>
-                <div className="p-8">
-                  <h1 className="text-2xl font-bold mb-4">Employee Management</h1>
-                  <p>This page is under construction.</p>
-                </div>
+                <EmployeeManagement />
               </MainLayout>
             }
           />
@@ -66,10 +66,7 @@ const App = () => (
             path="/payroll-config"
             element={
               <MainLayout>
-                <div className="p-8">
-                  <h1 className="text-2xl font-bold mb-4">Payroll Configurations</h1>
-                  <p>This page is under construction.</p>
-                </div>
+                <PayrollConfig />
               </MainLayout>
             }
           />
@@ -77,10 +74,7 @@ const App = () => (
             path="/reports"
             element={
               <MainLayout>
-                <div className="p-8">
-                  <h1 className="text-2xl font-bold mb-4">Global Reports</h1>
-                  <p>This page is under construction.</p>
-                </div>
+                <Reports />
               </MainLayout>
             }
           />
@@ -88,10 +82,7 @@ const App = () => (
             path="/system-settings"
             element={
               <MainLayout>
-                <div className="p-8">
-                  <h1 className="text-2xl font-bold mb-4">System Settings</h1>
-                  <p>This page is under construction.</p>
-                </div>
+                <SystemSettings />
               </MainLayout>
             }
           />
@@ -99,10 +90,7 @@ const App = () => (
             path="/audit-logs"
             element={
               <MainLayout>
-                <div className="p-8">
-                  <h1 className="text-2xl font-bold mb-4">Audit Logs</h1>
-                  <p>This page is under construction.</p>
-                </div>
+                <AuditLogs />
               </MainLayout>
             }
           />
