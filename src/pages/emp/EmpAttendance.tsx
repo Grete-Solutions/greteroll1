@@ -139,8 +139,8 @@ const EmpAttendance = () => {
         description: `You clocked out at ${timeString}. Hours worked: ${hoursWorked.toFixed(1)}`,
       });
       
-      // Add to time entries
-      const todayEntry = {
+      // Add to time entries - Fix the type error by explicitly defining status as 'Present'
+      const todayEntry: TimeEntry = {
         date: new Date(),
         clockIn: clockInTime,
         clockOut: timeString,
