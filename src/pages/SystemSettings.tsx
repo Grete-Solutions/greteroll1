@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Card, 
@@ -106,7 +105,6 @@ const SystemSettings = () => {
           </TabsTrigger>
         </TabsList>
 
-        {/* Security Tab */}
         <TabsContent value="security">
           <Card>
             <CardHeader>
@@ -196,7 +194,6 @@ const SystemSettings = () => {
           </Card>
         </TabsContent>
 
-        {/* Roles Tab */}
         <TabsContent value="roles">
           <Card>
             <CardHeader>
@@ -308,7 +305,6 @@ const SystemSettings = () => {
           </Card>
         </TabsContent>
 
-        {/* Backup Tab */}
         <TabsContent value="backup">
           <Card>
             <CardHeader>
@@ -326,7 +322,7 @@ const SystemSettings = () => {
                 <Switch
                   id="auto-backup"
                   checked={backup.autoBackup}
-                  onCheckedChange={() => handleBackupChange('autoBackup')}
+                  onCheckedChange={() => handleBackupChange('autoBackup', null)}
                 />
               </div>
               
