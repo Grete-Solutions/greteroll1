@@ -93,7 +93,7 @@ const EmpDashboard = () => {
           </AlertDescription>
         </Alert>
         
-        <Alert variant="warning">
+        <Alert variant="destructive" className="border-amber-200 bg-amber-50 text-amber-800">
           <AlertTriangle className="h-4 w-4" />
           <AlertTitle>Leave Request Pending</AlertTitle>
           <AlertDescription>
