@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { FileDown, FilePdf, FileSpreadsheet } from 'lucide-react';
+import { FileDown, FileText, FileSpreadsheet } from 'lucide-react';
 
 const CompanyReports = () => {
   const [reportType, setReportType] = useState('payroll');
@@ -99,7 +99,7 @@ const CompanyReports = () => {
                   <TableCell>
                     <div className="flex space-x-2">
                       <Button variant="ghost" size="sm">
-                        <FilePdf className="h-4 w-4 mr-2" />
+                        <FileText className="h-4 w-4 mr-2" />
                         PDF
                       </Button>
                       <Button variant="ghost" size="sm">
@@ -123,3 +123,4 @@ const CompanyReports = () => {
 };
 
 export default CompanyReports;
+
