@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
@@ -75,15 +76,19 @@ const Sidebar: React.FC<SidebarProps> = ({ variant = 'admin' }) => {
   ];
 
   let sidebarItems;
+  let sidebarTitle = "";
   switch (variant) {
     case 'employee':
       sidebarItems = employeeSidebarItems;
+      sidebarTitle = "Employee Portal";
       break;
     case 'company':
       sidebarItems = companySidebarItems;
+      sidebarTitle = "Company Portal";
       break;
     default:
       sidebarItems = adminSidebarItems;
+      sidebarTitle = "Admin Portal";
   }
 
   const MobileSidebar = () => (
@@ -158,6 +163,7 @@ const Sidebar: React.FC<SidebarProps> = ({ variant = 'admin' }) => {
           </div>
           <span className="text-white font-bold text-xl">PayrollNexus</span>
         </div>
+        <div className="text-white text-sm mt-2">{sidebarTitle}</div>
       </SidebarHeader>
       <SidebarContent>
         <nav className="space-y-1 px-2 py-5">

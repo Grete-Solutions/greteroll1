@@ -90,12 +90,14 @@ const Navbar: React.FC<NavbarProps> = ({ variant = 'admin' }) => {
                 <User className="mr-2 h-4 w-4" />
                 <span>My Profile</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => navigate(variant === 'admin' ? '/admin/system-settings' : variant === 'company' ? '/company/settings' : '/emp/settings')}>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
-              </DropdownMenuItem>
+              {variant !== 'employee' && (
+                <DropdownMenuItem onSelect={() => navigate(variant === 'admin' ? '/admin/system-settings' : '/company/settings')}>
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+              )}
               <DropdownMenuSeparator />
-              <DropdownMenuItem onSelect={() => navigate("/")}>
+              <DropdownMenuItem onSelect={() => navigate("/login")}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Logout</span>
               </DropdownMenuItem>
