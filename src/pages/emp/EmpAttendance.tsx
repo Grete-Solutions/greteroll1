@@ -7,7 +7,6 @@ import {
   CardTitle,
   CardDescription 
 } from '@/components/ui/card';
-import { Calendar } from 'lucide-react';
 
 const EmpAttendance = () => {
   // Sample attendance data
