@@ -8,34 +8,42 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
 
-const Navbar = () => {
+interface NavbarProps {
+  variant?: 'admin' | 'company';
+}
+
+const Navbar: React.FC<NavbarProps> = ({ variant = 'admin' }) => {
   const [notifications] = useState([
-    { id: 1, message: 'New company registration: Acme Inc', time: '10 mins ago' },
-    { id: 2, message: 'Payroll processing complete for TechCorp', time: '1 hour ago' },
-    { id: 3, message: 'System update scheduled for tonight', time: '3 hours ago' },
+    { id: 1, message: variant === 'admin' ? 'New company registration: Acme Inc' : 'New employee request awaiting approval', time: '10 mins ago' },
+    { id: 2, message: variant === 'admin' ? 'Payroll processing complete for TechCorp' : 'Payroll ready for review', time: '1 hour ago' },
+    { id: 3, message: variant === 'admin' ? 'System update scheduled for tonight' : 'New leave request submitted', time: '3 hours ago' },
   ]);
   
   const navigate = useNavigate();
+  
+  const profileName = variant === 'admin' ? 'Super Admin' : 'Company Admin';
+  const profileInitials = variant === 'admin' ? 'SA' : 'CA';
+  const baseUrl = variant === 'admin' ? '/admin' : '/company';
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
-      <div className="flex items-center justify-between px-6 py-3">
+      <div className="flex items-center justify-between px-4 py-3 md:px-6">
         <div className="flex-1 max-w-md">
-          <div className="relative">
+          <div className="relative hidden md:block">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
             <Input
               type="search"
-              placeholder="Search companies, reports..."
+              placeholder={variant === 'admin' ? "Search companies, reports..." : "Search employees, departments..."}
               className="pl-10 bg-gray-50"
             />
           </div>
         </div>
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 md:space-x-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="relative p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full">
@@ -65,18 +73,18 @@ const Navbar = () => {
             <DropdownMenuTrigger asChild>
               <button className="flex items-center space-x-2 text-gray-700 hover:text-gray-900">
                 <Avatar className="h-8 w-8">
-                  <AvatarFallback className="bg-primary text-white">SA</AvatarFallback>
+                  <AvatarFallback className="bg-primary text-white">{profileInitials}</AvatarFallback>
                 </Avatar>
-                <span className="text-sm font-medium">Super Admin</span>
-                <ChevronDown size={16} />
+                <span className="text-sm font-medium hidden md:block">{profileName}</span>
+                <ChevronDown size={16} className="hidden md:block" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onSelect={() => navigate("/profile")}>
+              <DropdownMenuItem onSelect={() => navigate(`${baseUrl}/profile`)}>
                 <User className="mr-2 h-4 w-4" />
                 <span>My Profile</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => navigate("/system-settings")}>
+              <DropdownMenuItem onSelect={() => navigate(variant === 'admin' ? '/admin/system-settings' : '/company/settings')}>
                 <Settings className="mr-2 h-4 w-4" />
                 <span>Settings</span>
               </DropdownMenuItem>

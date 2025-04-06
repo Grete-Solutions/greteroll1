@@ -11,6 +11,11 @@ import {
   Users,
   FileText,
   ClipboardList,
+  Menu,
+  Clock,
+  Calendar,
+  CheckCircle,
+  PieChart,
 } from 'lucide-react';
 import {
   Sidebar as ShadcnSidebar,
@@ -19,23 +24,44 @@ import {
   SidebarFooter,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 
-const Sidebar = () => {
+interface SidebarProps {
+  variant?: 'admin' | 'company';
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ variant = 'admin' }) => {
   const location = useLocation();
+  const isMobile = useIsMobile();
   
-  const sidebarItems = [
-    { to: "/dashboard", icon: <LayoutDashboard size={20} />, label: "Dashboard" },
-    { to: "/companies", icon: <Building size={20} />, label: "Companies Management" },
-    { to: "/company-setup", icon: <Cog size={20} />, label: "Company Setup" },
-    { to: "/employees", icon: <Users size={20} />, label: "Employee Management" },
-    { to: "/payroll-config", icon: <ClipboardList size={20} />, label: "Payroll Configurations" },
-    { to: "/reports", icon: <FileText size={20} />, label: "Global Reports" },
-    { to: "/system-settings", icon: <Settings size={20} />, label: "System Settings" },
-    { to: "/audit-logs", icon: <BarChart3 size={20} />, label: "Audit Logs" },
+  const adminSidebarItems = [
+    { to: "/admin/dashboard", icon: <LayoutDashboard size={20} />, label: "Dashboard" },
+    { to: "/admin/company-setup", icon: <Cog size={20} />, label: "Company Setup" },
+    { to: "/admin/employees", icon: <Users size={20} />, label: "Employee Management" },
+    { to: "/admin/payroll-config", icon: <ClipboardList size={20} />, label: "Payroll Configurations" },
+    { to: "/admin/reports", icon: <FileText size={20} />, label: "Global Reports" },
+    { to: "/admin/system-settings", icon: <Settings size={20} />, label: "System Settings" },
+    { to: "/admin/audit-logs", icon: <BarChart3 size={20} />, label: "Audit Logs" },
   ];
 
+  const companySidebarItems = [
+    { to: "/company/dashboard", icon: <LayoutDashboard size={20} />, label: "Dashboard" },
+    { to: "/company/employees", icon: <Users size={20} />, label: "Employees" },
+    { to: "/company/departments", icon: <Building size={20} />, label: "Departments" },
+    { to: "/company/payroll", icon: <ClipboardList size={20} />, label: "Payroll" },
+    { to: "/company/benefits", icon: <PieChart size={20} />, label: "Deductions & Benefits" },
+    { to: "/company/attendance", icon: <Clock size={20} />, label: "Attendance & Timesheets" },
+    { to: "/company/leave", icon: <Calendar size={20} />, label: "Leave Management" },
+    { to: "/company/approvals", icon: <CheckCircle size={20} />, label: "Approvals Center" },
+    { to: "/company/reports", icon: <FileText size={20} />, label: "Reports" },
+    { to: "/company/settings", icon: <Settings size={20} />, label: "Settings" },
+  ];
+
+  const sidebarItems = variant === 'admin' ? adminSidebarItems : companySidebarItems;
+
   return (
-    <ShadcnSidebar>
+    <ShadcnSidebar className="z-50">
       <SidebarHeader className="flex justify-center items-center p-4">
         <div className="flex items-center space-x-2">
           <div className="bg-primary rounded-full p-2">
@@ -66,7 +92,12 @@ const Sidebar = () => {
           <span className="font-medium">Logout</span>
         </NavLink>
       </SidebarFooter>
-      <SidebarTrigger className="absolute top-3 -right-3 bg-sidebar-primary text-white p-1 rounded-full shadow-md hover:bg-primary/90 transition-colors" />
+      <SidebarTrigger className={cn(
+        "absolute top-3 -right-3 bg-sidebar-primary text-white p-1 rounded-full shadow-md hover:bg-primary/90 transition-colors",
+        isMobile && "flex md:hidden"
+      )}>
+        <Menu className="h-4 w-4" />
+      </SidebarTrigger>
     </ShadcnSidebar>
   );
 };
