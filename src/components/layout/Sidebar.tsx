@@ -21,6 +21,17 @@ import {
 } from '@/components/ui/sidebar';
 
 const Sidebar = () => {
+  const sidebarItems = [
+    { to: "/dashboard", icon: <LayoutDashboard size={20} />, label: "Dashboard" },
+    { to: "/companies", icon: <Building size={20} />, label: "Companies Management" },
+    { to: "/company-setup", icon: <Cog size={20} />, label: "Company Setup" },
+    { to: "/employees", icon: <Users size={20} />, label: "Employee Management" },
+    { to: "/payroll-config", icon: <ClipboardList size={20} />, label: "Payroll Configurations" },
+    { to: "/reports", icon: <FileText size={20} />, label: "Global Reports" },
+    { to: "/system-settings", icon: <Settings size={20} />, label: "System Settings" },
+    { to: "/audit-logs", icon: <BarChart3 size={20} />, label: "Audit Logs" },
+  ];
+
   return (
     <ShadcnSidebar>
       <SidebarHeader className="flex justify-center items-center p-4">
@@ -33,14 +44,14 @@ const Sidebar = () => {
       </SidebarHeader>
       <SidebarContent>
         <nav className="space-y-1 px-2 py-5">
-          <NavItem to="/dashboard" icon={<LayoutDashboard size={20} />} label="Dashboard" />
-          <NavItem to="/companies" icon={<Building size={20} />} label="Companies Management" />
-          <NavItem to="/company-setup" icon={<Cog size={20} />} label="Company Setup" />
-          <NavItem to="/employees" icon={<Users size={20} />} label="Employee Management" />
-          <NavItem to="/payroll-config" icon={<ClipboardList size={20} />} label="Payroll Configurations" />
-          <NavItem to="/reports" icon={<FileText size={20} />} label="Global Reports" />
-          <NavItem to="/system-settings" icon={<Settings size={20} />} label="System Settings" />
-          <NavItem to="/audit-logs" icon={<BarChart3 size={20} />} label="Audit Logs" />
+          {sidebarItems.map((item) => (
+            <NavItem 
+              key={item.to}
+              to={item.to} 
+              icon={item.icon} 
+              label={item.label} 
+            />
+          ))}
         </nav>
       </SidebarContent>
       <SidebarFooter className="px-4 py-4">

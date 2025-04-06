@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Bell, ChevronDown, Search, User } from 'lucide-react';
+import { Bell, ChevronDown, Search, User, Settings, LogOut } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -77,7 +77,7 @@ const Navbar = () => {
                 <span>My Profile</span>
               </DropdownMenuItem>
               <DropdownMenuItem onSelect={() => navigate("/system-settings")}>
-                <Bell className="mr-2 h-4 w-4" />
+                <Settings className="mr-2 h-4 w-4" />
                 <span>Settings</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
@@ -92,22 +92,5 @@ const Navbar = () => {
     </header>
   );
 };
-
-const LogOut = (props: any) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    {...props}
-  >
-    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-    <polyline points="16 17 21 12 16 7"></polyline>
-    <line x1="21" y1="12" x2="9" y2="12"></line>
-  </svg>
-);
 
 export default Navbar;
