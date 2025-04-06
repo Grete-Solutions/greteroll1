@@ -1,11 +1,13 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, Tooltip, ResponsiveContainer, XAxis, YAxis, Legend } from 'recharts';
 import { Users, DollarSign, Calendar, Clock, AlertCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const CompanyDashboard = () => {
+  const navigate = useNavigate();
+  
   // Mock data for charts
   const payrollHistoryData = [
     { month: 'Jan', amount: 86500 },
@@ -53,8 +55,8 @@ const CompanyDashboard = () => {
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      {/* Stats Cards - Updated for better responsiveness */}
+      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         <StatCard
           title="Total Employees"
           value={stats.totalEmployees.toString()}
@@ -208,7 +210,14 @@ const CompanyDashboard = () => {
           </div>
         </CardContent>
         <CardFooter>
-          <Button variant="outline" size="sm" className="ml-auto">View All Activities</Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="ml-auto"
+            onClick={() => navigate('/company/reports')}
+          >
+            View All Activities
+          </Button>
         </CardFooter>
       </Card>
     </div>

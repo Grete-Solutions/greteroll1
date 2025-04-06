@@ -24,9 +24,18 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
-  DialogTrigger
+  DialogTitle
 } from '@/components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Label } from '@/components/ui/label';
 import { 
   Select, 
@@ -36,7 +45,7 @@ import {
   SelectValue 
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Search, Plus, Edit, MoreVertical } from 'lucide-react';
+import { Search, Plus, Edit, Trash2 } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 
@@ -44,7 +53,9 @@ const CompanyDepartments = () => {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [editingDepartment, setEditingDepartment] = useState<any>(null);
+  const [currentError, setCurrentError] = useState<string | null>(null);
   
   // Mock data for departments
   const [departments, setDepartments] = useState([
@@ -75,6 +86,7 @@ const CompanyDepartments = () => {
 
   const handleEditDepartment = (department: any) => {
     setEditingDepartment({...department});
+    setCurrentError(null);
     setIsDialogOpen(true);
   };
 
@@ -88,11 +100,32 @@ const CompanyDepartments = () => {
       status: 'Active',
       description: ''
     });
+    setCurrentError(null);
     setIsDialogOpen(true);
   };
 
+  const validateDepartment = () => {
+    // Check for duplicate department names
+    if (!editingDepartment.name.trim()) {
+      setCurrentError("Department name is required");
+      return false;
+    }
+    
+    const isDuplicate = departments.some(
+      dept => dept.name.toLowerCase() === editingDepartment.name.toLowerCase() && dept.id !== editingDepartment.id
+    );
+    
+    if (isDuplicate) {
+      setCurrentError("A department with this name already exists");
+      return false;
+    }
+    
+    setCurrentError(null);
+    return true;
+  };
+
   const handleSaveDepartment = () => {
-    if (editingDepartment.name) {
+    if (validateDepartment()) {
       if (editingDepartment.id) {
         // Update existing department
         setDepartments(
@@ -118,6 +151,25 @@ const CompanyDepartments = () => {
       }
       setIsDialogOpen(false);
     }
+  };
+
+  const handleDeleteDepartment = () => {
+    // Check if department has employees
+    if (editingDepartment.employees > 0) {
+      setIsDeleteDialogOpen(true);
+    } else {
+      confirmDeleteDepartment();
+    }
+  };
+
+  const confirmDeleteDepartment = () => {
+    setDepartments(departments.filter(dept => dept.id !== editingDepartment.id));
+    toast({
+      title: "Department Deleted",
+      description: `${editingDepartment.name} has been deleted.`,
+    });
+    setIsDeleteDialogOpen(false);
+    setIsDialogOpen(false);
   };
 
   return (
@@ -180,14 +232,27 @@ const CompanyDepartments = () => {
                       </TableCell>
                       <TableCell className="max-w-xs truncate">{department.description}</TableCell>
                       <TableCell className="text-right">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleEditDepartment(department)}
-                        >
-                          <Edit className="h-4 w-4" />
-                          <span className="sr-only">Edit</span>
-                        </Button>
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleEditDepartment(department)}
+                          >
+                            <Edit className="h-4 w-4" />
+                            <span className="sr-only">Edit</span>
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              setEditingDepartment(department);
+                              handleDeleteDepartment();
+                            }}
+                          >
+                            <Trash2 className="h-4 w-4 text-red-500" />
+                            <span className="sr-only">Delete</span>
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))
@@ -204,6 +269,7 @@ const CompanyDepartments = () => {
         </CardContent>
       </Card>
 
+      {/* Add/Edit Department Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
@@ -228,10 +294,11 @@ const CompanyDepartments = () => {
                 }
                 placeholder="Enter department name"
               />
+              {currentError && <p className="text-sm text-red-500">{currentError}</p>}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="department-head">Department Head</Label>
+              <Label htmlFor="department-head">Assign Manager</Label>
               <Select
                 value={editingDepartment?.headId?.toString() || ''}
                 onValueChange={(value) => {
@@ -258,7 +325,7 @@ const CompanyDepartments = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="department-description">Description</Label>
+              <Label htmlFor="department-description">Description / Notes</Label>
               <Textarea
                 id="department-description"
                 value={editingDepartment?.description || ''}
@@ -283,16 +350,54 @@ const CompanyDepartments = () => {
               />
               <Label htmlFor="department-status">Department Active</Label>
             </div>
+
+            {editingDepartment?.id && editingDepartment.employees > 0 && (
+              <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md text-yellow-800">
+                <p className="text-sm">
+                  This department has {editingDepartment.employees} employees assigned. 
+                  Renaming will reflect across the system.
+                </p>
+              </div>
+            )}
           </div>
 
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleSaveDepartment}>Save Department</Button>
+          <DialogFooter className="flex justify-between">
+            <div>
+              {editingDepartment?.id && (
+                <Button variant="destructive" onClick={handleDeleteDepartment}>
+                  Delete Department
+                </Button>
+              )}
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleSaveDepartment}>
+                {editingDepartment?.id ? 'Save Changes' : 'Create Department'}
+              </Button>
+            </div>
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Confirmation Dialog for Department Deletion */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this department? This action cannot be undone and will affect {editingDepartment?.employees} employees.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDeleteDepartment} className="bg-red-500 hover:bg-red-600">
+              Delete Department
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
