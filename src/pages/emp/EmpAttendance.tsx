@@ -7,6 +7,7 @@ import {
   CardTitle,
   CardDescription 
 } from '@/components/ui/card';
+import { Calendar } from '@/components/ui/calendar';
 
 const EmpAttendance = () => {
   // Sample attendance data
