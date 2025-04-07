@@ -124,6 +124,13 @@
     }
   }
 
+  /* Mobile drawer text color fix */
+  .vaul-drawer-content nav a,
+  .vaul-drawer-content nav button,
+  .vaul-drawer-content .font-medium {
+    @apply text-black dark:text-white;
+  }
+
   .card-hover {
     @apply transition-all duration-200 hover:shadow-md hover:-translate-y-1;
   }
