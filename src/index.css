@@ -114,6 +114,15 @@
   [data-sidebar="sidebar"][data-mobile="true"] .sidebar-group-label {
     @apply text-black dark:text-white;
   }
+  
+  /* Mobile sidebar color fix */
+  @media (max-width: 768px) {
+    [data-theme="light"] [data-sidebar="sidebar"] .sidebar-link,
+    [data-theme="light"] [data-sidebar="sidebar"] .sidebar-menu-button,
+    [data-theme="light"] [data-sidebar="sidebar"] .sidebar-group-label {
+      @apply text-black;
+    }
+  }
 
   .card-hover {
     @apply transition-all duration-200 hover:shadow-md hover:-translate-y-1;

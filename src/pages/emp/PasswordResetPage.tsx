@@ -6,7 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
-import { Eye, EyeOff, Check, X } from 'lucide-react';
+import { Eye, EyeOff, Check, X, AlertCircle } from 'lucide-react';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 
 const PasswordResetPage = () => {
   const [searchParams] = useSearchParams();
@@ -28,6 +29,13 @@ const PasswordResetPage = () => {
     match: false
   });
   
+  // OTP verification state
+  const [showOtpVerification, setShowOtpVerification] = useState(false);
+  const [otp, setOtp] = useState('');
+  const [otpResendTimer, setOtpResendTimer] = useState(45);
+  const [canResendOtp, setCanResendOtp] = useState(false);
+  const [verifyingOtp, setVerifyingOtp] = useState(false);
+  
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -36,6 +44,7 @@ const PasswordResetPage = () => {
     if (!token) {
       setIsTokenValid(false);
       setIsTokenChecking(false);
+      setShowOtpVerification(true); // Show OTP verification if no token
       return;
     }
 
@@ -56,6 +65,19 @@ const PasswordResetPage = () => {
 
     validateToken();
   }, [token]);
+
+  // OTP resend timer
+  useEffect(() => {
+    if (showOtpVerification && otpResendTimer > 0) {
+      const timer = setTimeout(() => {
+        setOtpResendTimer(prevTime => prevTime - 1);
+      }, 1000);
+      
+      return () => clearTimeout(timer);
+    } else if (otpResendTimer === 0) {
+      setCanResendOtp(true);
+    }
+  }, [showOtpVerification, otpResendTimer]);
 
   // Check password strength and validation
   useEffect(() => {
@@ -129,6 +151,50 @@ const PasswordResetPage = () => {
     }, 1500);
   };
 
+  const handleVerifyOtp = () => {
+    if (otp.length < 6) {
+      toast({
+        title: "Invalid OTP",
+        description: "Please enter the complete 6-digit code.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setVerifyingOtp(true);
+
+    // Simulate OTP verification
+    setTimeout(() => {
+      setVerifyingOtp(false);
+      
+      // For demo, we'll consider OTP valid if it has 6 digits
+      if (otp.length === 6) {
+        setShowOtpVerification(false);
+        setIsTokenValid(true);
+      } else {
+        toast({
+          title: "Invalid OTP",
+          description: "The code you entered is incorrect. Please try again.",
+          variant: "destructive",
+        });
+      }
+    }, 1500);
+  };
+
+  const handleResendOtp = () => {
+    if (!canResendOtp) return;
+    
+    // Reset timer and disable resend button
+    setOtpResendTimer(45);
+    setCanResendOtp(false);
+    
+    // Simulate sending new OTP
+    toast({
+      title: "New code sent",
+      description: "A new verification code has been sent to your email.",
+    });
+  };
+
   if (isTokenChecking) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
@@ -138,6 +204,69 @@ const PasswordResetPage = () => {
             <p className="text-gray-600 mb-6">Please wait while we verify your reset link...</p>
             <div className="flex justify-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (showOtpVerification) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold">Verify Your Identity</h2>
+            <p className="text-gray-600 mt-2">
+              Enter the 6-digit code sent to your email or phone to continue.
+            </p>
+          </div>
+          
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="otp">One-Time Password (OTP)</Label>
+              <div className="flex justify-center">
+                <InputOTP 
+                  maxLength={6} 
+                  value={otp} 
+                  onChange={setOtp}
+                  disabled={verifyingOtp}
+                >
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                    <InputOTPSlot index={3} />
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                  </InputOTPGroup>
+                </InputOTP>
+              </div>
+            </div>
+            
+            <Button 
+              className="w-full" 
+              onClick={handleVerifyOtp}
+              disabled={verifyingOtp || otp.length < 6}
+            >
+              {verifyingOtp ? "Verifying..." : "Verify"}
+            </Button>
+            
+            <div className="text-center text-sm">
+              <p className="text-gray-600">
+                Didn't receive the code?{" "}
+                <button
+                  type="button"
+                  onClick={handleResendOtp}
+                  className={`font-medium ${canResendOtp ? "text-primary hover:text-primary/80" : "text-gray-400"}`}
+                  disabled={!canResendOtp}
+                >
+                  {canResendOtp ? "Resend code" : `Resend in ${otpResendTimer < 10 ? `0${otpResendTimer}` : otpResendTimer}`}
+                </button>
+              </p>
+              <p className="mt-4 text-gray-500">
+                For assistance, contact your administrator.
+              </p>
             </div>
           </div>
         </div>
