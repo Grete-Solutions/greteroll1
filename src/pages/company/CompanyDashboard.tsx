@@ -1,9 +1,7 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArrowUp, ArrowDown, DollarSign, Users, Clock, Calendar } from 'lucide-react';
-import ActivityLogs from '@/components/logs/ActivityLogs';
 
 const CompanyDashboard = () => {
   return (
@@ -49,16 +47,12 @@ const CompanyDashboard = () => {
       <Tabs defaultValue="overview">
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="activity">Activity</TabsTrigger>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
         </TabsList>
         <TabsContent value="overview" className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <PendingCard />
           <UpcomingCard />
           <AttendanceCard />
-        </TabsContent>
-        <TabsContent value="activity">
-          <ActivityLogs />
         </TabsContent>
         <TabsContent value="analytics">
           <div className="grid gap-6 md:grid-cols-2">
