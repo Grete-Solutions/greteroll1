@@ -13,7 +13,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-interface DateRangePickerProps extends React.HTMLAttributes<HTMLDivElement> {
+// Renamed onDateChange to avoid collision with HTMLElement's onChange
+interface DateRangePickerProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
   value?: DateRange | undefined
   onChange?: (date: DateRange | undefined) => void
 }
@@ -22,6 +23,7 @@ export function DateRangePicker({
   className,
   value,
   onChange,
+  ...props // Capture remaining props
 }: DateRangePickerProps) {
   const [date, setDate] = React.useState<DateRange | undefined>(value)
 
@@ -32,7 +34,7 @@ export function DateRangePicker({
   }, [value])
 
   return (
-    <div className={cn("grid gap-2", className)}>
+    <div className={cn("grid gap-2", className)} {...props}>
       <Popover>
         <PopoverTrigger asChild>
           <Button
