@@ -99,6 +99,15 @@
 }
 
 @layer components {
+  /* Fix for sidebar text color in light mode */
+  .sidebar-content .sidebar-link {
+    @apply text-black dark:text-white;
+  }
+  
+  .sidebar-content .sidebar-group-label {
+    @apply text-black/70 dark:text-white/70;
+  }
+
   .card-hover {
     @apply transition-all duration-200 hover:shadow-md hover:-translate-y-1;
   }

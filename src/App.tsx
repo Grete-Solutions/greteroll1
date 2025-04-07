@@ -30,6 +30,8 @@ import EmpLeave from '@/pages/emp/EmpLeave';
 import EmpAttendance from '@/pages/emp/EmpAttendance';
 import EmpRequests from '@/pages/emp/EmpRequests';
 import EmpDocuments from '@/pages/emp/EmpDocuments';
+import EmpLoginPage from '@/pages/emp/EmpLoginPage';
+import PasswordResetPage from '@/pages/emp/PasswordResetPage';
 import { ThemeProvider } from '@/hooks/use-theme';
 import { Toaster } from '@/components/ui/toaster';
 import './App.css';
@@ -41,6 +43,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
+          
+          {/* Employee Login Routes */}
+          <Route path="/emp/login" element={<EmpLoginPage />} />
+          <Route path="/emp/reset-password" element={<PasswordResetPage />} />
           
           {/* Admin Routes */}
           <Route path="/admin/dashboard" element={<MainLayout variant="admin"><Dashboard /></MainLayout>} />
