@@ -99,22 +99,6 @@
 }
 
 @layer components {
-  /* Fix for sidebar text color in light mode */
-  .sidebar-content .sidebar-link {
-    @apply text-black dark:text-white;
-  }
-  
-  .sidebar-content .sidebar-group-label {
-    @apply text-black/70 dark:text-white/70;
-  }
-
-  /* Fix for mobile sidebar text in light mode */
-  [data-sidebar="sidebar"][data-mobile="true"] .sidebar-link,
-  [data-sidebar="sidebar"][data-mobile="true"] .sidebar-menu-button,
-  [data-sidebar="sidebar"][data-mobile="true"] .sidebar-group-label {
-    @apply text-black dark:text-white;
-  }
-
   .card-hover {
     @apply transition-all duration-200 hover:shadow-md hover:-translate-y-1;
   }
