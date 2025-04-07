@@ -2,15 +2,15 @@
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormField } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Eye, EyeOff, CheckCircle, X, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { Progress } from '@/components/ui/progress';
+import PasswordInputField from '@/components/password/PasswordInputField';
+import PasswordRequirements from '@/components/password/PasswordRequirements';
+import PasswordSuccessCard from '@/components/password/PasswordSuccessCard';
 
 const formSchema = z.object({
   password: z
@@ -58,16 +58,12 @@ const EmployeeNewPassword = () => {
 
     // Check length
     if (watchPassword.length >= 8) strength += 20;
-
     // Check for uppercase letters
     if (/[A-Z]/.test(watchPassword)) strength += 20;
-
     // Check for lowercase letters
     if (/[a-z]/.test(watchPassword)) strength += 20;
-
     // Check for numbers
     if (/[0-9]/.test(watchPassword)) strength += 20;
-
     // Check for special characters
     if (/[^A-Za-z0-9]/.test(watchPassword)) strength += 20;
 
@@ -98,6 +94,8 @@ const EmployeeNewPassword = () => {
     }, 1500);
   }
 
+  const handleNavigateToLogin = () => navigate('/emp/login');
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <div className="w-full max-w-md">
@@ -116,72 +114,30 @@ const EmployeeNewPassword = () => {
                     control={form.control}
                     name="password"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>New Password</FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Input
-                              type={showPassword ? "text" : "password"}
-                              {...field}
-                            />
-                            <button
-                              type="button"
-                              className="absolute inset-y-0 right-0 flex items-center pr-3"
-                              onClick={() => setShowPassword(!showPassword)}
-                            >
-                              {showPassword ? (
-                                <EyeOff className="h-4 w-4 text-gray-400" />
-                              ) : (
-                                <Eye className="h-4 w-4 text-gray-400" />
-                              )}
-                            </button>
-                          </div>
-                        </FormControl>
-                        <div className="space-y-2 mt-2">
-                          <div className="space-y-1">
-                            <div className="flex justify-between text-xs">
-                              <span>Password strength</span>
-                              <span>
-                                {passwordStrength === 0 && "None"}
-                                {passwordStrength > 0 && passwordStrength < 40 && "Weak"}
-                                {passwordStrength >= 40 && passwordStrength < 80 && "Medium"}
-                                {passwordStrength >= 80 && "Strong"}
-                              </span>
-                            </div>
-                            <Progress value={passwordStrength} className="h-1" />
-                          </div>
-                        </div>
-                        <FormMessage />
-                      </FormItem>
+                      <PasswordInputField
+                        field={field}
+                        label="New Password"
+                        showPassword={showPassword}
+                        toggleShowPassword={() => setShowPassword(!showPassword)}
+                      >
+                        <PasswordRequirements 
+                          password={watchPassword} 
+                          passwordStrength={passwordStrength} 
+                        />
+                      </PasswordInputField>
                     )}
                   />
+                  
                   <FormField
                     control={form.control}
                     name="confirmPassword"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Confirm New Password</FormLabel>
-                        <FormControl>
-                          <div className="relative">
-                            <Input
-                              type={showConfirmPassword ? "text" : "password"}
-                              {...field}
-                            />
-                            <button
-                              type="button"
-                              className="absolute inset-y-0 right-0 flex items-center pr-3"
-                              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                            >
-                              {showConfirmPassword ? (
-                                <EyeOff className="h-4 w-4 text-gray-400" />
-                              ) : (
-                                <Eye className="h-4 w-4 text-gray-400" />
-                              )}
-                            </button>
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
+                      <PasswordInputField
+                        field={field}
+                        label="Confirm New Password"
+                        showPassword={showConfirmPassword}
+                        toggleShowPassword={() => setShowConfirmPassword(!showConfirmPassword)}
+                      />
                     )}
                   />
                   
@@ -191,7 +147,11 @@ const EmployeeNewPassword = () => {
                     </div>
                   </div>
                   
-                  <Button type="submit" className="w-full" disabled={isLoading || passwordStrength < 60}>
+                  <Button 
+                    type="submit" 
+                    className="w-full" 
+                    disabled={isLoading || passwordStrength < 60}
+                  >
                     {isLoading ? "Setting password..." : "Set Password"}
                   </Button>
                 </form>
@@ -199,25 +159,10 @@ const EmployeeNewPassword = () => {
             </CardContent>
           </Card>
         ) : (
-          <Card>
-            <CardContent className="p-6">
-              <div className="text-center space-y-4">
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-600 mx-auto">
-                  <CheckCircle className="h-6 w-6" />
-                </div>
-                <h2 className="text-xl font-semibold">Password Set Successfully</h2>
-                <p className="text-gray-500">
-                  Your new password has been set. You can now use it to log in to your account.
-                </p>
-                <Button
-                  className="mt-4 w-full"
-                  onClick={() => navigate('/emp/login')}
-                >
-                  Go to Login
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <PasswordSuccessCard 
+            onLoginClick={handleNavigateToLogin}
+            redirectPath="/emp/login"
+          />
         )}
       </div>
     </div>
