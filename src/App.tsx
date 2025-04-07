@@ -30,6 +30,8 @@ import EmpLeave from '@/pages/emp/EmpLeave';
 import EmpAttendance from '@/pages/emp/EmpAttendance';
 import EmpRequests from '@/pages/emp/EmpRequests';
 import EmpDocuments from '@/pages/emp/EmpDocuments';
+import EmpLoginPage from '@/pages/emp/EmpLoginPage';
+import PasswordResetPage from '@/pages/emp/PasswordResetPage';
 import { ThemeProvider } from '@/hooks/use-theme';
 import { Toaster } from '@/components/ui/toaster';
 import './App.css';
@@ -42,7 +44,12 @@ function App() {
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
           
+          {/* Employee Login Routes */}
+          <Route path="/emp/login" element={<EmpLoginPage />} />
+          <Route path="/emp/reset-password" element={<PasswordResetPage />} />
+          
           {/* Admin Routes */}
+          <Route path="/dashboard" element={<MainLayout variant="admin"><Dashboard /></MainLayout>} />
           <Route path="/admin/dashboard" element={<MainLayout variant="admin"><Dashboard /></MainLayout>} />
           <Route path="/admin/company-setup" element={<MainLayout variant="admin"><CompanySetup /></MainLayout>} />
           <Route path="/admin/employees" element={<MainLayout variant="admin"><EmployeeManagement /></MainLayout>} />
@@ -65,7 +72,7 @@ function App() {
           <Route path="/company/profile" element={<MainLayout variant="company"><CompanyProfile /></MainLayout>} />
           <Route path="/company/settings" element={<MainLayout variant="company"><CompanySettings /></MainLayout>} />
           
-          {/* Employee Routes - without the settings route */}
+          {/* Employee Routes */}
           <Route path="/emp/dashboard" element={<MainLayout variant="employee"><EmpDashboard /></MainLayout>} />
           <Route path="/emp/payslips" element={<MainLayout variant="employee"><EmpPayslips /></MainLayout>} />
           <Route path="/emp/profile" element={<MainLayout variant="employee"><EmpProfile /></MainLayout>} />
