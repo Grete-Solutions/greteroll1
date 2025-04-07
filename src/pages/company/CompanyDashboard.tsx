@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -12,21 +13,23 @@ const CompanyDashboard = () => {
         <p className="text-muted-foreground">Welcome to your company dashboard</p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <StatCard 
-          title="Total Employees"
-          value="124"
-          change="+4"
-          changeType="increase"
-          icon={<Users className="h-6 w-6" />}
-        />
-        <StatCard 
-          title="Payroll Processed"
-          value="$45,231"
-          change="+2.5%"
-          changeType="increase"
-          icon={<DollarSign className="h-6 w-6" />}
-        />
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+        <div className="col-span-1 md:col-span-2 lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <StatCard 
+            title="Total Employees"
+            value="124"
+            change="+4"
+            changeType="increase"
+            icon={<Users className="h-6 w-6" />}
+          />
+          <StatCard 
+            title="Payroll Processed"
+            value="$45,231"
+            change="+2.5%"
+            changeType="increase"
+            icon={<DollarSign className="h-6 w-6" />}
+          />
+        </div>
         <StatCard 
           title="Leave Requests"
           value="8"

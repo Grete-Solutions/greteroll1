@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Plus, Edit, AlertTriangle, Check } from 'lucide-react';
+import { Search, Plus, Edit, AlertTriangle, Check, Mail, Phone } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -34,6 +34,8 @@ const initialCompanies = [
     country: 'United States',
     currency: 'USD',
     status: 'Active',
+    email: 'contact@acme.com',
+    phone: '+1 (555) 123-4567',
   },
   {
     id: 2,
@@ -41,6 +43,8 @@ const initialCompanies = [
     country: 'Canada',
     currency: 'CAD',
     status: 'Active',
+    email: 'info@techcorp.com',
+    phone: '+1 (555) 987-6543',
   },
   {
     id: 3,
@@ -48,6 +52,8 @@ const initialCompanies = [
     country: 'United Kingdom',
     currency: 'GBP',
     status: 'Active',
+    email: 'hello@globalfoods.com',
+    phone: '+44 20 7123 4567',
   },
   {
     id: 4,
@@ -55,6 +61,8 @@ const initialCompanies = [
     country: 'Australia',
     currency: 'AUD',
     status: 'Inactive',
+    email: 'sales@quantum.com.au',
+    phone: '+61 2 8123 4567',
   },
   {
     id: 5,
@@ -62,6 +70,8 @@ const initialCompanies = [
     country: 'Germany',
     currency: 'EUR',
     status: 'Active',
+    email: 'info@northern-mfg.de',
+    phone: '+49 30 1234 5678',
   },
 ];
 
@@ -98,6 +108,8 @@ const CompanySetup = () => {
       status: 'Active',
       selfService: true,
       language: 'English',
+      email: '',
+      phone: '',
     });
     setIsDialogOpen(true);
   };
@@ -261,6 +273,38 @@ const CompanySetup = () => {
                     setEditingCompany({ ...editingCompany, name: e.target.value })
                   }
                   placeholder="Enter company name"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="company-email" className="flex items-center gap-2">
+                  <Mail className="h-4 w-4" />
+                  Company Email
+                </Label>
+                <Input
+                  id="company-email"
+                  type="email"
+                  value={editingCompany?.email || ''}
+                  onChange={(e) =>
+                    setEditingCompany({ ...editingCompany, email: e.target.value })
+                  }
+                  placeholder="company@example.com"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="company-phone" className="flex items-center gap-2">
+                  <Phone className="h-4 w-4" />
+                  Phone Number
+                </Label>
+                <Input
+                  id="company-phone"
+                  type="tel"
+                  value={editingCompany?.phone || ''}
+                  onChange={(e) =>
+                    setEditingCompany({ ...editingCompany, phone: e.target.value })
+                  }
+                  placeholder="+1 (123) 456-7890"
                 />
               </div>
 

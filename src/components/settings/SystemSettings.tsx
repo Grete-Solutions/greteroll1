@@ -37,12 +37,6 @@ import {
   Clock,
   Languages,
   Calendar,
-  Settings,
-  Shield,
-  Upload,
-  BellRing,
-  ExternalLink,
-  Beaker
 } from "lucide-react";
 
 interface SystemSettingsProps {
@@ -70,19 +64,6 @@ export function SystemSettings({ isAdmin = false, isOpen, onClose }: SystemSetti
     language: "English",
     dateFormat: "DD-MM-YYYY",
     timeFormat: "24-hour",
-    
-    // Advanced settings
-    twoFactorAuth: false,
-    passwordComplexity: true,
-    sessionTimeout: "30min",
-    autoBackup: true,
-    emailNotifications: true,
-    smsNotifications: false,
-    pushNotifications: false,
-    smsApiKey: "",
-    emailApiKey: "",
-    analyticsApiKey: "",
-    betaFeatures: false
   });
 
   const handleChange = (field: string, value: string | boolean) => {
@@ -132,8 +113,6 @@ export function SystemSettings({ isAdmin = false, isOpen, onClose }: SystemSetti
   const dateFormats = ["DD-MM-YYYY", "MM-DD-YYYY", "YYYY-MM-DD"];
   
   const timeFormats = ["12-hour", "24-hour"];
-  
-  const sessionTimeouts = ["15min", "30min", "1hr", "2hr", "4hr"];
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -148,7 +127,7 @@ export function SystemSettings({ isAdmin = false, isOpen, onClose }: SystemSetti
         </DialogHeader>
         
         <Tabs defaultValue="branding">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="branding" className="flex items-center gap-2">
               <Building className="h-4 w-4" />
               <span>Branding</span>
@@ -164,10 +143,6 @@ export function SystemSettings({ isAdmin = false, isOpen, onClose }: SystemSetti
             <TabsTrigger value="brandCustomization" className="flex items-center gap-2">
               <Image className="h-4 w-4" />
               <span>UI Personalization</span>
-            </TabsTrigger>
-            <TabsTrigger value="advanced" className="flex items-center gap-2">
-              <Settings className="h-4 w-4" />
-              <span>Advanced</span>
             </TabsTrigger>
           </TabsList>
           
@@ -260,54 +235,7 @@ export function SystemSettings({ isAdmin = false, isOpen, onClose }: SystemSetti
             </div>
           </TabsContent>
           
-          {/* Original Localization Tab */}
-          <TabsContent value="localization" className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="language">Default Language</Label>
-              <Select defaultValue="en">
-                <SelectTrigger>
-                  <SelectValue placeholder="Select language" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="en">English</SelectItem>
-                  <SelectItem value="fr">French</SelectItem>
-                  <SelectItem value="es">Spanish</SelectItem>
-                  <SelectItem value="de">German</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="dateFormat">Date Format</Label>
-              <Select defaultValue="MM/DD/YYYY">
-                <SelectTrigger>
-                  <SelectValue placeholder="Select date format" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="MM/DD/YYYY">MM/DD/YYYY</SelectItem>
-                  <SelectItem value="DD/MM/YYYY">DD/MM/YYYY</SelectItem>
-                  <SelectItem value="YYYY-MM-DD">YYYY-MM-DD</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="timeZone">Time Zone</Label>
-              <Select defaultValue="UTC">
-                <SelectTrigger>
-                  <SelectValue placeholder="Select time zone" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="UTC">UTC</SelectItem>
-                  <SelectItem value="EST">Eastern Standard Time (EST)</SelectItem>
-                  <SelectItem value="CST">Central Standard Time (CST)</SelectItem>
-                  <SelectItem value="PST">Pacific Standard Time (PST)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </TabsContent>
-
-          {/* NEW: Localization Settings Tab */}
+          {/* Localization Tab */}
           <TabsContent value="localization" className="space-y-4 py-4">
             <div className="space-y-4">
               <div className="space-y-2">
@@ -418,19 +346,10 @@ export function SystemSettings({ isAdmin = false, isOpen, onClose }: SystemSetti
                 </Select>
                 <p className="text-xs text-muted-foreground italic mt-1">Coming soon</p>
               </div>
-              
-              <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-md text-sm">
-                <div className="flex items-start gap-2">
-                  <Shield className="h-5 w-5 text-blue-500 shrink-0 mt-0.5" />
-                  <p className="text-blue-700 dark:text-blue-300">
-                    These settings act as the global fallback defaults for newly added companies. Each company can override their own localization settings later.
-                  </p>
-                </div>
-              </div>
             </div>
           </TabsContent>
           
-          {/* NEW: Brand Customization Tab */}
+          {/* Brand Customization Tab */}
           <TabsContent value="brandCustomization" className="space-y-4 py-4">
             <div className="space-y-4">
               <div className="space-y-2">
@@ -452,7 +371,7 @@ export function SystemSettings({ isAdmin = false, isOpen, onClose }: SystemSetti
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="primaryLogo" className="flex items-center gap-2">
-                    <Upload className="h-4 w-4" />
+                    <Image className="h-4 w-4" />
                     Primary Logo (Light Mode)
                   </Label>
                   <div className="flex items-center gap-2">
@@ -463,7 +382,7 @@ export function SystemSettings({ isAdmin = false, isOpen, onClose }: SystemSetti
                       placeholder="Logo URL or upload"
                     />
                     <Button variant="outline" size="icon">
-                      <Upload className="h-4 w-4" />
+                      <Image className="h-4 w-4" />
                     </Button>
                   </div>
                   {settings.logo && (
@@ -482,7 +401,7 @@ export function SystemSettings({ isAdmin = false, isOpen, onClose }: SystemSetti
                 
                 <div className="space-y-2">
                   <Label htmlFor="darkModeLogo" className="flex items-center gap-2">
-                    <Upload className="h-4 w-4" />
+                    <Image className="h-4 w-4" />
                     Dark Mode Logo (Optional)
                   </Label>
                   <div className="flex items-center gap-2">
@@ -493,7 +412,7 @@ export function SystemSettings({ isAdmin = false, isOpen, onClose }: SystemSetti
                       placeholder="Dark mode logo URL or upload"
                     />
                     <Button variant="outline" size="icon">
-                      <Upload className="h-4 w-4" />
+                      <Image className="h-4 w-4" />
                     </Button>
                   </div>
                   {settings.darkModeLogo && (
@@ -555,7 +474,7 @@ export function SystemSettings({ isAdmin = false, isOpen, onClose }: SystemSetti
                     placeholder="Banner image URL or upload"
                   />
                   <Button variant="outline" size="icon">
-                    <Upload className="h-4 w-4" />
+                    <Image className="h-4 w-4" />
                   </Button>
                 </div>
                 {settings.loginBanner && (
@@ -586,176 +505,6 @@ export function SystemSettings({ isAdmin = false, isOpen, onClose }: SystemSetti
                 <p className="text-xs text-muted-foreground mt-1">
                   This will be displayed on the login screen or in the footer
                 </p>
-              </div>
-              
-              <div className="flex items-center justify-end space-x-2 pt-4">
-                <Button variant="outline" onClick={() => {}}>
-                  Reset to Default
-                </Button>
-              </div>
-            </div>
-          </TabsContent>
-          
-          {/* NEW: Advanced System Options Tab */}
-          <TabsContent value="advanced" className="space-y-4 py-4">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label className="flex items-center gap-2">
-                    <Shield className="h-4 w-4" />
-                    Two-Factor Authentication
-                  </Label>
-                  <p className="text-sm text-muted-foreground">
-                    Require 2FA for all super admin accounts
-                  </p>
-                </div>
-                <Switch 
-                  checked={settings.twoFactorAuth} 
-                  onCheckedChange={(checked) => handleChange('twoFactorAuth', checked)}
-                />
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label className="flex items-center gap-2">
-                    <Shield className="h-4 w-4" />
-                    Enforce Password Complexity
-                  </Label>
-                  <p className="text-sm text-muted-foreground">
-                    Require strong passwords (min 8 chars, symbols, numbers)
-                  </p>
-                </div>
-                <Switch 
-                  checked={settings.passwordComplexity} 
-                  onCheckedChange={(checked) => handleChange('passwordComplexity', checked)}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="sessionTimeout" className="flex items-center gap-2">
-                  <Clock className="h-4 w-4" />
-                  Session Timeout Duration
-                </Label>
-                <Select 
-                  value={settings.sessionTimeout}
-                  onValueChange={(value) => handleChange('sessionTimeout', value)}
-                >
-                  <SelectTrigger id="sessionTimeout">
-                    <SelectValue placeholder="Select timeout duration" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {sessionTimeouts.map((timeout) => (
-                      <SelectItem key={timeout} value={timeout}>{timeout}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Users will be logged out after this period of inactivity
-                </p>
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label className="flex items-center gap-2">
-                    <Clock className="h-4 w-4" />
-                    Enable System-Wide Auto Backup
-                  </Label>
-                  <p className="text-sm text-muted-foreground">
-                    Automatically backup system data on schedule
-                  </p>
-                </div>
-                <Switch 
-                  checked={settings.autoBackup} 
-                  onCheckedChange={(checked) => handleChange('autoBackup', checked)}
-                />
-              </div>
-              
-              <div>
-                <h3 className="text-sm font-medium mb-3 flex items-center gap-2">
-                  <BellRing className="h-4 w-4" />
-                  Global Notification Defaults
-                </h3>
-                <div className="space-y-3 pl-6">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="emailNotifications">Email notifications</Label>
-                    <Switch 
-                      id="emailNotifications" 
-                      checked={settings.emailNotifications} 
-                      onCheckedChange={(checked) => handleChange('emailNotifications', checked)}
-                    />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="smsNotifications">SMS notifications</Label>
-                    <Switch 
-                      id="smsNotifications" 
-                      checked={settings.smsNotifications} 
-                      onCheckedChange={(checked) => handleChange('smsNotifications', checked)}
-                    />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="pushNotifications">Push notifications</Label>
-                    <Switch 
-                      id="pushNotifications" 
-                      checked={settings.pushNotifications} 
-                      onCheckedChange={(checked) => handleChange('pushNotifications', checked)}
-                    />
-                  </div>
-                </div>
-              </div>
-              
-              <div className="pt-4">
-                <h3 className="text-sm font-medium mb-3 flex items-center gap-2">
-                  <ExternalLink className="h-4 w-4" />
-                  Third-Party Integration Keys
-                </h3>
-                <div className="space-y-3">
-                  <div className="space-y-2">
-                    <Label htmlFor="smsApiKey">SMS Gateway API Key</Label>
-                    <Input
-                      id="smsApiKey"
-                      type="password"
-                      value={settings.smsApiKey}
-                      onChange={(e) => handleChange('smsApiKey', e.target.value)}
-                      placeholder="Enter SMS gateway API key"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="emailApiKey">Email Provider API Key</Label>
-                    <Input
-                      id="emailApiKey"
-                      type="password"
-                      value={settings.emailApiKey}
-                      onChange={(e) => handleChange('emailApiKey', e.target.value)}
-                      placeholder="Enter email provider API key"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="analyticsApiKey">Analytics API Key</Label>
-                    <Input
-                      id="analyticsApiKey"
-                      type="password"
-                      value={settings.analyticsApiKey}
-                      onChange={(e) => handleChange('analyticsApiKey', e.target.value)}
-                      placeholder="Enter analytics API key"
-                    />
-                  </div>
-                </div>
-              </div>
-              
-              <div className="flex items-center justify-between pt-4">
-                <div className="space-y-0.5">
-                  <Label className="flex items-center gap-2">
-                    <Beaker className="h-4 w-4" />
-                    Beta Feature Toggle
-                  </Label>
-                  <p className="text-sm text-muted-foreground">
-                    Enable experimental features for testing
-                  </p>
-                </div>
-                <Switch 
-                  checked={settings.betaFeatures} 
-                  onCheckedChange={(checked) => handleChange('betaFeatures', checked)}
-                />
               </div>
             </div>
           </TabsContent>
