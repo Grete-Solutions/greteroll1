@@ -39,7 +39,7 @@ const LoginForm = () => {
         // Success case
         toast({
           title: "Login successful",
-          description: "Welcome to the Payroll Nexus Admin Suite",
+          description: "Welcome to the GreteRoll Admin Suite",
         });
         navigate('/dashboard');
       } else {
@@ -57,7 +57,7 @@ const LoginForm = () => {
   return (
     <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-lg animate-fade-in">
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-gray-900">Payroll Nexus</h2>
+        <h2 className="text-3xl font-bold text-gray-900">GreteRoll</h2>
         <p className="mt-2 text-gray-600">Super Administrator Login</p>
       </div>
       

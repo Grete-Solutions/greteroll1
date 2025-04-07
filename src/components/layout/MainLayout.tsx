@@ -3,7 +3,6 @@ import React, { ReactNode } from 'react';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
-import { ThemeProvider } from '@/hooks/use-theme';
 
 interface MainLayoutProps {
   children: ReactNode;

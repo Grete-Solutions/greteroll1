@@ -11,6 +11,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
+import { ThemeToggler } from '@/components/theme/ThemeToggler';
 
 interface NavbarProps {
   variant?: 'admin' | 'company' | 'employee';
@@ -50,6 +51,8 @@ const Navbar: React.FC<NavbarProps> = ({ variant = 'admin' }) => {
         </div>
 
         <div className="flex items-center space-x-2 md:space-x-4">
+          <ThemeToggler />
+          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="relative p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full">

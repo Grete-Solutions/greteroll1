@@ -9,7 +9,7 @@ const Login = () => {
         {/* Left side branding */}
         <div className="bg-primary/90 text-white p-10 flex flex-col justify-center w-full md:w-2/5">
           <div className="space-y-6">
-            <h1 className="text-3xl font-bold">Payroll Nexus</h1>
+            <h1 className="text-3xl font-bold">GreteRoll</h1>
             <p className="text-lg opacity-90">
               Welcome to the Super Administrator portal. Manage your companies,
               employees, and payroll settings with ease.

@@ -6,16 +6,19 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, CheckCircle, Clock, XCircle } from 'lucide-react';
+import { Calendar, CheckCircle, Clock, XCircle, FileDown, Printer } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 
 const CompanyLeave = () => {
   const [activeTab, setActiveTab] = useState('requests');
+  const [viewDetails, setViewDetails] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState(null);
   
   const leaveRequests = [
-    { id: 1, employee: 'John Doe', type: 'Annual Leave', startDate: '2024-04-15', endDate: '2024-04-20', days: 5, status: 'Pending' },
-    { id: 2, employee: 'Jane Smith', type: 'Sick Leave', startDate: '2024-04-10', endDate: '2024-04-12', days: 2, status: 'Approved' },
-    { id: 3, employee: 'Mike Johnson', type: 'Annual Leave', startDate: '2024-04-25', endDate: '2024-04-28', days: 3, status: 'Pending' },
-    { id: 4, employee: 'Sarah Williams', type: 'Family Emergency', startDate: '2024-04-05', endDate: '2024-04-07', days: 2, status: 'Rejected' },
+    { id: 1, employee: 'John Doe', type: 'Annual Leave', startDate: '2024-04-15', endDate: '2024-04-20', days: 5, status: 'Pending', reason: 'Family vacation', approver: '', approvalDate: '', comments: '' },
+    { id: 2, employee: 'Jane Smith', type: 'Sick Leave', startDate: '2024-04-10', endDate: '2024-04-12', days: 2, status: 'Approved', reason: 'Doctor appointment', approver: 'Mark Wilson', approvalDate: '2024-04-09', comments: 'Approved as requested' },
+    { id: 3, employee: 'Mike Johnson', type: 'Annual Leave', startDate: '2024-04-25', endDate: '2024-04-28', days: 3, status: 'Pending', reason: 'Personal matters', approver: '', approvalDate: '', comments: '' },
+    { id: 4, employee: 'Sarah Williams', type: 'Family Emergency', startDate: '2024-04-05', endDate: '2024-04-07', days: 2, status: 'Rejected', reason: 'Family emergency', approver: 'Mark Wilson', approvalDate: '2024-04-03', comments: 'Insufficient documentation provided' },
   ];
   
   const leaveBalances = [
@@ -42,6 +45,11 @@ const CompanyLeave = () => {
       default:
         return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">Pending</Badge>;
     }
+  };
+  
+  const openLeaveDetails = (request) => {
+    setSelectedRequest(request);
+    setViewDetails(true);
   };
 
   return (
@@ -136,7 +144,14 @@ const CompanyLeave = () => {
                               </Button>
                             </>
                           )}
-                          <Button size="sm" variant="ghost" className="h-8">View</Button>
+                          <Button 
+                            size="sm" 
+                            variant="ghost" 
+                            className="h-8" 
+                            onClick={() => openLeaveDetails(request)}
+                          >
+                            View
+                          </Button>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -223,6 +238,88 @@ const CompanyLeave = () => {
           </Card>
         </TabsContent>
       </Tabs>
+      
+      {/* Leave Request Details Modal */}
+      <Dialog open={viewDetails} onOpenChange={setViewDetails}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Leave Request Details</DialogTitle>
+            <DialogDescription>
+              View the full details of the leave request
+            </DialogDescription>
+          </DialogHeader>
+          
+          {selectedRequest && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Employee</p>
+                  <p className="text-sm">{selectedRequest.employee}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Status</p>
+                  <div>{getStatusBadge(selectedRequest.status)}</div>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Leave Type</p>
+                  <p className="text-sm">{selectedRequest.type}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Duration</p>
+                  <p className="text-sm">{selectedRequest.days} days</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Start Date</p>
+                  <p className="text-sm">{selectedRequest.startDate}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">End Date</p>
+                  <p className="text-sm">{selectedRequest.endDate}</p>
+                </div>
+              </div>
+              
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Reason</p>
+                <p className="text-sm">{selectedRequest.reason}</p>
+              </div>
+              
+              {selectedRequest.status !== 'Pending' && (
+                <>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Approved/Rejected By</p>
+                      <p className="text-sm">{selectedRequest.approver}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Decision Date</p>
+                      <p className="text-sm">{selectedRequest.approvalDate}</p>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">Comments</p>
+                    <p className="text-sm">{selectedRequest.comments}</p>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+          
+          <DialogFooter className="flex justify-between items-center">
+            <div className="space-x-2">
+              <Button size="sm" variant="outline" className="flex items-center gap-1">
+                <Printer className="h-4 w-4" />
+                Print
+              </Button>
+              <Button size="sm" variant="outline" className="flex items-center gap-1">
+                <FileDown className="h-4 w-4" />
+                Export
+              </Button>
+            </div>
+            <Button onClick={() => setViewDetails(false)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
