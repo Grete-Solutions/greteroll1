@@ -1,320 +1,218 @@
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, Tooltip, ResponsiveContainer, XAxis, YAxis, Legend } from 'recharts';
-import { Users, DollarSign, Calendar, Clock, AlertCircle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ArrowUp, ArrowDown, DollarSign, Users, Clock, Calendar } from 'lucide-react';
 import { ActivityLogs } from '@/components/logs/ActivityLogs';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle,
-  DialogTrigger 
-} from '@/components/ui/dialog';
 
 const CompanyDashboard = () => {
-  const navigate = useNavigate();
-  const [showLogs, setShowLogs] = React.useState(false);
-  
-  // Mock data for charts
-  const payrollHistoryData = [
-    { month: 'Jan', amount: 86500 },
-    { month: 'Feb', amount: 89200 },
-    { month: 'Mar', amount: 88100 },
-    { month: 'Apr', amount: 90500 },
-    { month: 'May', amount: 92300 },
-    { month: 'Jun', amount: 91800 },
-  ];
-
-  const salaryDistributionData = [
-    { role: 'Executive', count: 3, salary: 25000 },
-    { role: 'Manager', count: 12, salary: 15000 },
-    { role: 'Senior', count: 18, salary: 10000 },
-    { role: 'Junior', count: 25, salary: 5000 },
-    { role: 'Associate', count: 15, salary: 3500 },
-  ];
-
-  // Mock data for stats
-  const stats = {
-    totalEmployees: 73,
-    totalMonthlyPayroll: '$92,300',
-    upcomingPayroll: {
-      date: '2025-04-15',
-      status: 'Pending'
-    },
-    pendingApprovals: 5,
-    leaveRequests: 3
-  };
-
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold tracking-tight">Company Dashboard</h1>
-        <div className="flex flex-wrap gap-3">
-          <Button variant="default">
-            Run Payroll
-          </Button>
-          <Button variant="outline">
-            Add Employee
-          </Button>
-          <Button variant="outline">
-            View Reports
-          </Button>
-        </div>
+    <div className="space-y-6 p-6">
+      <div>
+        <h1 className="text-3xl font-bold">Company Dashboard</h1>
+        <p className="text-muted-foreground">Welcome to your company dashboard</p>
       </div>
 
-      {/* Top Stats Cards - First Row - Responsive to 1 row on medium+ screens */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <StatCard
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <StatCard 
           title="Total Employees"
-          value={stats.totalEmployees.toString()}
-          icon={<Users className="h-8 w-8 text-blue-500" />}
-          linkText="View all employees"
-          linkUrl="/company/employees"
+          value="124"
+          change="+4"
+          changeType="increase"
+          icon={<Users className="h-6 w-6" />}
         />
-        <StatCard
-          title="Monthly Payroll"
-          value={stats.totalMonthlyPayroll}
-          icon={<DollarSign className="h-8 w-8 text-green-500" />}
-          linkText="View details"
-          linkUrl="/company/payroll"
+        <StatCard 
+          title="Payroll Processed"
+          value="$45,231"
+          change="+2.5%"
+          changeType="increase"
+          icon={<DollarSign className="h-6 w-6" />}
         />
-        <StatCard
-          title="Upcoming Payroll"
-          value={new Date(stats.upcomingPayroll.date).toLocaleDateString()}
-          icon={<Calendar className="h-8 w-8 text-purple-500" />}
-          linkText={stats.upcomingPayroll.status}
-          linkUrl="/company/payroll"
-          badgeColor="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
-        />
-      </div>
-
-      {/* Second Row of Stats - Two cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <StatCard
-          title="Pending Approvals"
-          value={stats.pendingApprovals.toString()}
-          icon={<AlertCircle className="h-8 w-8 text-orange-500" />}
-          linkText="View approvals"
-          linkUrl="/company/approvals"
-          badgeColor="bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300"
-        />
-        <StatCard
+        <StatCard 
           title="Leave Requests"
-          value={stats.leaveRequests.toString()}
-          icon={<Clock className="h-8 w-8 text-teal-500" />}
-          linkText="View requests"
-          linkUrl="/company/leave"
+          value="8"
+          change="+3"
+          changeType="increase"
+          icon={<Calendar className="h-6 w-6" />}
+        />
+        <StatCard 
+          title="Pending Approvals"
+          value="5"
+          change="-2"
+          changeType="decrease"
+          icon={<Clock className="h-6 w-6" />}
         />
       </div>
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Payroll History (6 Months)</CardTitle>
-            <CardDescription>Monthly payroll expense trends</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={payrollHistoryData}>
-                  <XAxis dataKey="month" />
-                  <YAxis 
-                    tickFormatter={(value) => `$${value/1000}k`}
-                  />
-                  <Tooltip formatter={(value) => [`$${value.toLocaleString()}`, 'Amount']} />
-                  <Line
-                    type="monotone"
-                    dataKey="amount"
-                    stroke="#4f46e5"
-                    strokeWidth={2}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Salary Distribution</CardTitle>
-            <CardDescription>By employee role</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={salaryDistributionData}>
-                  <XAxis dataKey="role" />
-                  <YAxis yAxisId="left" orientation="left" stroke="#8884d8" />
-                  <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
-                  <Tooltip />
-                  <Legend />
-                  <Bar yAxisId="left" dataKey="count" name="Number of Employees" fill="#8884d8" />
-                  <Bar yAxisId="right" dataKey="salary" name="Average Salary ($)" fill="#82ca9d" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Recent Activities */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Activities</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-3 px-4">Activity</th>
-                  <th className="text-left py-3 px-4">Employee</th>
-                  <th className="text-left py-3 px-4">Department</th>
-                  <th className="text-left py-3 px-4">Date</th>
-                  <th className="text-left py-3 px-4">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <ActivityRow
-                  activity="Salary change request"
-                  employee="Sarah Johnson"
-                  department="Marketing"
-                  date="2025-04-06"
-                  status="Pending approval"
-                  statusColor="text-yellow-600 bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-300"
-                />
-                <ActivityRow
-                  activity="Leave request"
-                  employee="Michael Chen"
-                  department="Engineering"
-                  date="2025-04-05"
-                  status="Approved"
-                  statusColor="text-green-600 bg-green-100 dark:bg-green-900 dark:text-green-300"
-                />
-                <ActivityRow
-                  activity="New hire onboarding"
-                  employee="Emily Rodriguez"
-                  department="Sales"
-                  date="2025-04-04"
-                  status="In progress"
-                  statusColor="text-blue-600 bg-blue-100 dark:bg-blue-900 dark:text-blue-300"
-                />
-                <ActivityRow
-                  activity="Bonus payment processed"
-                  employee="David Kim"
-                  department="Finance"
-                  date="2025-04-03"
-                  status="Completed"
-                  statusColor="text-green-600 bg-green-100 dark:bg-green-900 dark:text-green-300"
-                />
-                <ActivityRow
-                  activity="Overtime request"
-                  employee="Jessica Lee"
-                  department="Operations"
-                  date="2025-04-02"
-                  status="Rejected"
-                  statusColor="text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300"
-                />
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-        <CardFooter>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="ml-auto"
-            onClick={() => setShowLogs(true)}
-          >
-            View All Logs
-          </Button>
-        </CardFooter>
-      </Card>
-
-      {/* Activity Logs Dialog */}
-      <Dialog open={showLogs} onOpenChange={setShowLogs}>
-        <DialogContent className="max-w-5xl w-[90vw]">
-          <DialogHeader>
-            <DialogTitle>Activity Logs</DialogTitle>
-          </DialogHeader>
+      <Tabs defaultValue="overview">
+        <TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="activity">Activity</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview" className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <PendingCard />
+          <UpcomingCard />
+          <AttendanceCard />
+        </TabsContent>
+        <TabsContent value="activity">
           <ActivityLogs />
-        </DialogContent>
-      </Dialog>
+        </TabsContent>
+        <TabsContent value="analytics">
+          <div className="grid gap-6 md:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Department Distribution</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[300px] flex items-center justify-center">
+                  <p className="text-muted-foreground">Department chart will be displayed here</p>
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Payroll Trend</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[300px] flex items-center justify-center">
+                  <p className="text-muted-foreground">Payroll trend chart will be displayed here</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
 
-interface StatCardProps {
+const StatCard = ({ title, value, change, changeType, icon }: { 
   title: string;
   value: string;
+  change: string;
+  changeType: 'increase' | 'decrease';
   icon: React.ReactNode;
-  linkText: string;
-  linkUrl: string;
-  badgeColor?: string;
-}
-
-const StatCard: React.FC<StatCardProps> = ({
-  title,
-  value,
-  icon,
-  linkText,
-  linkUrl,
-  badgeColor = "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300"
 }) => {
   return (
-    <Card className="card-hover">
+    <Card>
       <CardContent className="p-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between space-x-4">
           <div>
-            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</p>
-            <p className="text-3xl font-bold">{value}</p>
-            <a
-              href={linkUrl}
-              className={`mt-2 inline-block text-xs px-2 py-1 rounded-full ${badgeColor}`}
-            >
-              {linkText}
-            </a>
+            <p className="text-sm font-medium text-muted-foreground">{title}</p>
+            <div className="flex items-baseline">
+              <h3 className="text-2xl font-bold">{value}</h3>
+              <div className={`ml-2 flex items-center text-sm ${
+                changeType === 'increase' ? 'text-green-600' : 'text-red-600'
+              }`}>
+                {changeType === 'increase' ? (
+                  <ArrowUp className="h-4 w-4 mr-1" />
+                ) : (
+                  <ArrowDown className="h-4 w-4 mr-1" />
+                )}
+                {change}
+              </div>
+            </div>
           </div>
-          <div className="rounded-full p-3 bg-gray-50 dark:bg-gray-800">{icon}</div>
+          <div className="p-2 bg-gray-100 rounded-full dark:bg-gray-800">
+            {icon}
+          </div>
         </div>
       </CardContent>
     </Card>
   );
 };
 
-interface ActivityRowProps {
-  activity: string;
-  employee: string;
-  department: string;
-  date: string;
-  status: string;
-  statusColor: string;
-}
-
-const ActivityRow: React.FC<ActivityRowProps> = ({
-  activity,
-  employee,
-  department,
-  date,
-  status,
-  statusColor
-}) => {
+const PendingCard = () => {
   return (
-    <tr className="border-b">
-      <td className="py-3 px-4">{activity}</td>
-      <td className="py-3 px-4">{employee}</td>
-      <td className="py-3 px-4">{department}</td>
-      <td className="py-3 px-4">{date}</td>
-      <td className="py-3 px-4">
-        <span className={`px-2 py-1 text-xs rounded-full ${statusColor}`}>
-          {status}
-        </span>
-      </td>
-    </tr>
+    <Card>
+      <CardHeader>
+        <CardTitle>Pending Approvals</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ul className="space-y-3">
+          <li className="flex items-center justify-between">
+            <span>Leave Request - John Doe</span>
+            <span className="text-sm font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">Pending</span>
+          </li>
+          <li className="flex items-center justify-between">
+            <span>Expense Claim - Jane Smith</span>
+            <span className="text-sm font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">Pending</span>
+          </li>
+          <li className="flex items-center justify-between">
+            <span>Overtime Request - Alex Johnson</span>
+            <span className="text-sm font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">Pending</span>
+          </li>
+        </ul>
+      </CardContent>
+    </Card>
+  );
+};
+
+const UpcomingCard = () => {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Upcoming Events</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ul className="space-y-3">
+          <li className="flex items-center justify-between">
+            <span>Payroll Processing</span>
+            <span className="text-sm text-gray-500">Tomorrow</span>
+          </li>
+          <li className="flex items-center justify-between">
+            <span>Department Meeting</span>
+            <span className="text-sm text-gray-500">3 days</span>
+          </li>
+          <li className="flex items-center justify-between">
+            <span>Tax Filing Deadline</span>
+            <span className="text-sm text-gray-500">Next week</span>
+          </li>
+        </ul>
+      </CardContent>
+    </Card>
+  );
+};
+
+const AttendanceCard = () => {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Today's Attendance</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-3">
+          <div className="flex justify-between items-center">
+            <span>Present</span>
+            <div className="flex items-center">
+              <div className="h-2.5 w-24 bg-gray-200 rounded-full overflow-hidden">
+                <div className="bg-green-500 h-full rounded-full" style={{ width: '85%' }}></div>
+              </div>
+              <span className="ml-2 text-sm font-medium">85%</span>
+            </div>
+          </div>
+          <div className="flex justify-between items-center">
+            <span>Absent</span>
+            <div className="flex items-center">
+              <div className="h-2.5 w-24 bg-gray-200 rounded-full overflow-hidden">
+                <div className="bg-red-500 h-full rounded-full" style={{ width: '8%' }}></div>
+              </div>
+              <span className="ml-2 text-sm font-medium">8%</span>
+            </div>
+          </div>
+          <div className="flex justify-between items-center">
+            <span>On Leave</span>
+            <div className="flex items-center">
+              <div className="h-2.5 w-24 bg-gray-200 rounded-full overflow-hidden">
+                <div className="bg-blue-500 h-full rounded-full" style={{ width: '7%' }}></div>
+              </div>
+              <span className="ml-2 text-sm font-medium">7%</span>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
