@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -6,6 +7,7 @@ import { Settings, Bell, Shield, Users, Building, Palette } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { SystemSettings } from '@/components/settings/SystemSettings';
 
 const CompanySettings = () => {
   const [isSystemSettingsOpen, setIsSystemSettingsOpen] = useState(false);
