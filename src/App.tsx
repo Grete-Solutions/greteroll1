@@ -49,7 +49,6 @@ function App() {
           <Route path="/emp/reset-password" element={<PasswordResetPage />} />
           
           {/* Admin Routes */}
-          <Route path="/dashboard" element={<MainLayout variant="admin"><Dashboard /></MainLayout>} />
           <Route path="/admin/dashboard" element={<MainLayout variant="admin"><Dashboard /></MainLayout>} />
           <Route path="/admin/company-setup" element={<MainLayout variant="admin"><CompanySetup /></MainLayout>} />
           <Route path="/admin/employees" element={<MainLayout variant="admin"><EmployeeManagement /></MainLayout>} />
@@ -72,7 +71,7 @@ function App() {
           <Route path="/company/profile" element={<MainLayout variant="company"><CompanyProfile /></MainLayout>} />
           <Route path="/company/settings" element={<MainLayout variant="company"><CompanySettings /></MainLayout>} />
           
-          {/* Employee Routes */}
+          {/* Employee Routes - without the settings route */}
           <Route path="/emp/dashboard" element={<MainLayout variant="employee"><EmpDashboard /></MainLayout>} />
           <Route path="/emp/payslips" element={<MainLayout variant="employee"><EmpPayslips /></MainLayout>} />
           <Route path="/emp/profile" element={<MainLayout variant="employee"><EmpProfile /></MainLayout>} />

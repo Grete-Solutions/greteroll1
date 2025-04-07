@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -177,15 +177,15 @@ const EmpLoginPage = () => {
         <div className="w-full md:w-3/5 flex items-center justify-center p-4 md:p-10">
           <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg animate-fade-in">
             <div className="text-center">
-              <h2 className="text-3xl font-bold text-gray-900">Welcome Back</h2>
-              <p className="mt-2 text-gray-600">Please enter your credentials to access your employee dashboard.</p>
+              <h2 className="text-3xl font-bold text-gray-900">GreteRoll</h2>
+              <p className="mt-2 text-gray-600">Employee Portal Login</p>
             </div>
             
             <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-4">
                 <div className="relative">
                   <Label htmlFor="email" className="form-label">
-                    Username or Email
+                    Email
                   </Label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
@@ -194,11 +194,11 @@ const EmpLoginPage = () => {
                     <Input
                       id="email"
                       name="email"
-                      type="text"
+                      type="email"
                       autoComplete="email"
                       required
                       className="pl-10"
-                      placeholder="Enter your email or username"
+                      placeholder="Enter your email"
                       value={formData.email}
                       onChange={handleChange}
                       disabled={isLoading}
@@ -277,7 +277,7 @@ const EmpLoginPage = () => {
               )}
 
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? 'Logging in...' : 'Login'}
+                {isLoading ? 'Logging in...' : 'Sign in'}
               </Button>
             </form>
           </div>
